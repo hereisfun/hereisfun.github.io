@@ -1083,7 +1083,3 @@ figure.highlight {
 .menu > div {
   font-size: 24px;
 }
-.menu > div:after {
-  content: '肠粉店';
-  display: block;
-}
