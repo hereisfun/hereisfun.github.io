@@ -786,7 +786,7 @@ blockquote {
 .menu > ul {
   padding-top: 2em;
 }
-.menu > nth:child(1) {
+.menu > div {
   font-size: 24px;
 }
 .avatar {
