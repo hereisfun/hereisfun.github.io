@@ -52,7 +52,7 @@
     <header class="title">
       
         <h1>
-          <a href="/2017/05/15/异步编程的异常处理/">test</a>
+          <a href="/2017/05/15/异步编程的异常处理/">异步编程的异常处理</a>
         </h1>
       
       <div class='ListMeta'>
@@ -119,41 +119,6 @@
 <p>通过这样的统一处理，前端可以用alert兜底，node端也可以返回500兜底，避免程序崩溃的同时也掌握了处理异常的主动权。</p>
 <p>#One more thing<br>别忘了可能还有漏网之鱼，我们可以通过监听全局错误来处理：<br>在<strong>浏览器</strong>端，监听未处理的rejection<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 仅chrome49支持</span></div><div class="line"><span class="built_in">window</span>.addEventListener(<span class="string">"unhandledrejection"</span>, <span class="function"><span class="keyword">function</span> (<span class="params">event</span>) </span>&#123;</div><div class="line">  <span class="built_in">console</span>.warn(<span class="string">"WARNING: Unhandled promise rejection. Shame on you! Reason: "</span>+ event.reason);</div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
 <p>在<strong>Node.js</strong>端（v1.4.1已支持）<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 用Map记录没处理的rejection</span></div><div class="line"><span class="keyword">const</span> unhandledRejections = <span class="keyword">new</span> <span class="built_in">Map</span>();</div><div class="line">process.on(<span class="string">'unhandledRejection'</span>, (reason, p) =&gt; &#123;</div><div class="line">  unhandledRejections.set(p, reason);</div><div class="line">&#125;);</div><div class="line"><span class="comment">// 处理后从Map中删除记录</span></div><div class="line">process.on(<span class="string">'rejectionHandled'</span>, (p) =&gt; &#123;</div><div class="line">  unhandledRejections.delete(p);</div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
-
-      
-    </div>
-</article>
-
-    </li>
-  
-    <li>
-      <article class='ListView'>
-    <header class="title">
-      
-        <h1>
-          <a href="/2017/05/11/hello-world/">Hello World</a>
-        </h1>
-      
-      <div class='ListMeta'>
-  <time datetime="2017-05-11T08:38:50.044Z" itemprop="datePublished">
-    2017-05-11
-  </time>
-  
-  
-</div>
-
-    </header>
-    <div>
-      
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo generate</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo deploy</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
 
       
     </div>
