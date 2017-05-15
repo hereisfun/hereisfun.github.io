@@ -446,6 +446,7 @@ figure.highlight {
   width: 92%;
   margin: auto;
   overflow-x: auto;
+  background: url("/assets/codebg.png") center;
 }
 .highlight > table {
   width: 100%;
@@ -1069,7 +1070,4 @@ time {
 
 .link {
     text-decoration: underline
-}
-figure.highlight {
-  background: url("/assets/codebg.png") center;
 }
