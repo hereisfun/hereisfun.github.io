@@ -1074,4 +1074,5 @@ time {
 }
 figure.highlight {
   border-left: 5px solid #d6aa95;
+  padding-left: 10px;
 }
