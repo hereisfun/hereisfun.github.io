@@ -1085,4 +1085,5 @@ figure.highlight {
 }
 .menu > div > :after {
   content: '肠粉店';
+  display: block;
 }
