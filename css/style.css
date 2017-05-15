@@ -1080,3 +1080,6 @@ figure.highlight {
   border-left: 2px solid #d6aa95;
   padding-left: 10px;
 }
+.menu > div {
+  font-size: 24px;
+}
