@@ -774,6 +774,7 @@ blockquote {
   opacity: 1;
 }
 .menu {
+  padding-top: 20px;
   box-sizing: border-box;
   position: absolute;
   top: 240px;
@@ -784,6 +785,9 @@ blockquote {
 }
 .menu > ul {
   padding-top: 2em;
+}
+.menu > nth:child(1) {
+  font-size: 24px;
 }
 .avatar {
   height: 180px;
@@ -820,10 +824,10 @@ blockquote {
     border-right: 3px #d6aa95 solid;
   }
   a.Btn > li:hover {
-    border-right-color: #683c25;
+    border-right-color: #6a3d28;
   }
   a.Btn.active > li {
-    border-right-color: #683c25;
+    border-right-color: #6a3d28;
   }
 }
 @media screen and (max-width: 1024px) {
