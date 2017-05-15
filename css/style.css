@@ -817,13 +817,13 @@ blockquote {
   }
   a.Btn > li {
     padding-right: 1em;
-    border-right: 3px #aaa solid;
+    border-right: 3px #d6aa95 solid;
   }
   a.Btn > li:hover {
-    border-right-color: #333;
+    border-right-color: #683c25;
   }
   a.Btn.active > li {
-    border-right-color: #333;
+    border-right-color: #683c25;
   }
 }
 @media screen and (max-width: 1024px) {
