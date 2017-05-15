@@ -1,92 +1,54 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-cmn-Hans">
 <head>
-  <meta charset="utf-8">
-  
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>test | Fung的肠粉店</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="本文主要参考自 @黄子毅 的 Callback Promise Generator Async-Await 和异常处理的演进, 对内容进行了一定的加工整理，并修改了原文中的一些错误。  #回调1.无法捕获的异常12345678910111213141516function fetch(callback) &amp;#123;    setTimeout(() =&amp;gt; &amp;#123;        th">
-<meta name="keywords" content="前端">
-<meta property="og:type" content="article">
-<meta property="og:title" content="test">
-<meta property="og:url" content="http://yoursite.com/2017/05/15/异步编程的异常处理/index.html">
-<meta property="og:site_name" content="Fung的肠粉店">
-<meta property="og:description" content="本文主要参考自 @黄子毅 的 Callback Promise Generator Async-Await 和异常处理的演进, 对内容进行了一定的加工整理，并修改了原文中的一些错误。  #回调1.无法捕获的异常12345678910111213141516function fetch(callback) &amp;#123;    setTimeout(() =&amp;gt; &amp;#123;        th">
-<meta property="og:updated_time" content="2017-05-15T04:50:40.121Z">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="test">
-<meta name="twitter:description" content="本文主要参考自 @黄子毅 的 Callback Promise Generator Async-Await 和异常处理的演进, 对内容进行了一定的加工整理，并修改了原文中的一些错误。  #回调1.无法捕获的异常12345678910111213141516function fetch(callback) &amp;#123;    setTimeout(() =&amp;gt; &amp;#123;        th">
-  
-    <link rel="alternate" href="/atom.xml" title="Fung的肠粉店" type="application/atom+xml">
   
   
-    <link rel="icon" href="/favicon.png">
-  
-  
-    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
-  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
   <link rel="stylesheet" href="/css/style.css">
-  
-
 </head>
 
 <body>
-  <div id="container">
-    <div id="wrap">
-      <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">Fung的肠粉店</a>
-      </h1>
-      
-    </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"></a>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url(undefined)">
+        <div class='av-pic' style="background-image: url(undefined)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Fung的肠粉店</div>
         
-          <a class="main-nav-link" href="/">Home</a>
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
         
-          <a class="main-nav-link" href="/archives">Archives</a>
-        
-      </nav>
-      <nav id="sub-nav">
-        
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="Flux RSS"></a>
-        
-        <a id="nav-search-btn" class="nav-icon" title="Rechercher"></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
-      </div>
-    </div>
-  </div>
-</header>
-      <div class="outer">
-        <section id="main"><article id="post-异步编程的异常处理" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/05/15/异步编程的异常处理/" class="article-date">
-  <time datetime="2017-05-15T04:44:29.000Z" itemprop="datePublished">2017-05-15</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="article-title" itemprop="name">
-      test
-    </h1>
-  
+    </section>
+</aside>
 
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <blockquote>
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>test</h1>
+    </header>
+
+    <section>
+      <blockquote>
 <p>本文主要参考自 @黄子毅 的 <a href="http://www.jianshu.com/p/78dfb38ac3d7" target="_blank" rel="external">Callback Promise Generator Async-Await 和异常处理的演进</a>, 对内容进行了一定的加工整理，并修改了原文中的一些错误。</p>
 </blockquote>
 <p>#回调<br>1.无法捕获的异常<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">fetch</span>(<span class="params">callback</span>) </span>&#123;</div><div class="line">    setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</div><div class="line">        <span class="keyword">throw</span> <span class="built_in">Error</span>(<span class="string">'请求失败'</span>)</div><div class="line">    &#125;)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">try</span> &#123;</div><div class="line">    fetch(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</div><div class="line">        <span class="built_in">console</span>.log(<span class="string">'请求处理'</span>) <span class="comment">// 永远不会执行</span></div><div class="line">    &#125;)</div><div class="line">&#125; <span class="keyword">catch</span> (error) &#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'触发异常'</span>, error) <span class="comment">// 永远不会执行</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 程序崩溃</span></div><div class="line"><span class="comment">// Uncaught Error: 请求失败</span></div></pre></td></tr></table></figure></p>
@@ -130,117 +92,50 @@
 <p>#One more thing<br>别忘了可能还有漏网之鱼，我们可以通过监听全局错误来处理：<br>在<strong>浏览器</strong>端，监听未处理的rejection<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 仅chrome49支持</span></div><div class="line"><span class="built_in">window</span>.addEventListener(<span class="string">"unhandledrejection"</span>, <span class="function"><span class="keyword">function</span> (<span class="params">event</span>) </span>&#123;</div><div class="line">  <span class="built_in">console</span>.warn(<span class="string">"WARNING: Unhandled promise rejection. Shame on you! Reason: "</span>+ event.reason);</div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
 <p>在<strong>Node.js</strong>端（v1.4.1已支持）<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 用Map记录没处理的rejection</span></div><div class="line"><span class="keyword">const</span> unhandledRejections = <span class="keyword">new</span> <span class="built_in">Map</span>();</div><div class="line">process.on(<span class="string">'unhandledRejection'</span>, (reason, p) =&gt; &#123;</div><div class="line">  unhandledRejections.set(p, reason);</div><div class="line">&#125;);</div><div class="line"><span class="comment">// 处理后从Map中删除记录</span></div><div class="line">process.on(<span class="string">'rejectionHandled'</span>, (p) =&gt; &#123;</div><div class="line">  unhandledRejections.delete(p);</div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
 
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/05/15/异步编程的异常处理/" data-id="cj2q0euvz00019kmcx3sc4bu0" class="article-share-link">Partager</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端/">前端</a></li></ul>
 
-    </footer>
-  </div>
-  
+      
+
+    </section>
     
-<nav id="article-nav">
-  
-  
-    <a href="/2017/05/11/hello-world/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Ancien</strong>
-      <div class="article-nav-title">Hello World</div>
-    </a>
-  
-</nav>
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2017-05-15T04:44:29.000Z" itemprop="datePublished">
+              2017-05-15
+            </time>
+          </div>
+          
+            <div>
+              tags: 
+  <li class="meta-text">
+  { <a href="/tags/前端/">前端</a> }
+  </li>
 
-  
+
+            </div>
+          
+      </section>
+    
+    
 </article>
 
-</section>
-        
-          <aside id="sidebar">
   
-    
+</div>
 
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Mot-clés</h3>
-    <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/前端/">前端</a></li></ul>
+            <footer>
+    <div>© 2016 - fung </div>
+    <div>
+    Powered by Hexo
     </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Nuage de mot-clés</h3>
-    <div class="widget tagcloud">
-      <a href="/tags/前端/" style="font-size: 10px;">前端</a>
-    </div>
-  </div>
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Articles récents</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2017/05/15/异步编程的异常处理/">test</a>
-          </li>
-        
-          <li>
-            <a href="/2017/05/11/hello-world/">Hello World</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
-
-  
-</aside>
-        
-      </div>
-      <footer id="footer">
-  
-  <div class="outer">
-    <div id="footer-info" class="inner">
-      &copy; 2017 fung<br>
-      Propulsé by <a href="http://hexo.io/" target="_blank">Hexo</a>
-    </div>
-  </div>
 </footer>
+
+        </div>
     </div>
-    <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-</nav>
-    
+</div>
+<script src="/js/pager/dist/singlepager.js"></script>
+<script>
+var sp = new Pager('data-pager-shell')
 
-<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
-
-
-  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
-  <script src="/fancybox/jquery.fancybox.pack.js"></script>
-
-
-<script src="/js/script.js"></script>
-
-  </div>
+</script>
 </body>
 </html>
