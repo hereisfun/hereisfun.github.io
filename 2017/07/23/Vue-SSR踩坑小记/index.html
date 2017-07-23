@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Fung的肠粉店</title>
+  <title>Vue-SSR踩坑小记 | Fung的肠粉店</title>
   
     <link rel="icon" href="/favicon.png">
   
@@ -58,38 +58,14 @@
 
     <div class="container">
         <div data-pager-shell>
-            <ul class="Index">
-  
-  
-    <li>
-      <article class='ListView'>
-    <header class="title">
-      
-        <h1>
-          <a href="/2017/07/23/Vue-SSR踩坑小记/">Vue-SSR踩坑小记</a>
-        </h1>
-      
-      <div class='ListMeta'>
-  <time datetime="2017-07-23T15:44:44.000Z" itemprop="datePublished">
-    2017-07-23
-  </time>
-  
-  | 
-  <ul>
-    
-  <li class="meta-text">
-  { <a href="/tags/vue-踩坑记录/">vue 踩坑记录</a> }
-  </li>
-
-  </ul>
-  
-  
-</div>
-
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>Vue-SSR踩坑小记</h1>
     </header>
-    <div>
-      
-        <blockquote>
+
+    <section>
+      <blockquote>
 <p>写在前面：本文只是Vue-SSR的踩坑记录，Vue-SSR的具体介绍情看官方文档及官方HackerNews demo.</p>
 </blockquote>
 <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>服务端渲染技术其实早已存在，早期的静态内容站点（如博客等）大多采用后端模板+上下文来进行服务端渲染。随着前端框架的兴起（React、Vue、Angular等）和网络性能的提升，趋势又逐渐转移到客户端渲染。然而，服务端渲染还是有着两个重要的优势：<strong>SEO友好</strong>和<strong>首屏渲染速度快</strong></p>
@@ -105,58 +81,34 @@
 <h2 id="多页面应用的解决方案？"><a href="#多页面应用的解决方案？" class="headerlink" title="多页面应用的解决方案？"></a>多页面应用的解决方案？</h2><p>最后的还有一个问题就是，官方推荐的优点多多的<code>createBundleRenderer</code>似乎只能生成单个json文件，但对于多页面应用，出于选择性渲染的考虑，显然生成单个bundle.json文件是不划算的。但目前暂时没找到根据页面生成多个bundle的方法，只能暂时采用普通的<code>createRenderer</code>来配合App实例渲染了。<br>（官方推荐的Nuxt.js就是一个多页面服务端渲染的解决方案，说明应该还是有办法解决这个问题的，还有待进一步研究）</p>
 <h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>目前只是把SSR用在了普通的页面而不是SPA上，也没有应用缓存，路由级代码分割等特性，所以踩到的坑暂时就只有这些（相信不止这些）。但解决方案都是一致的，就是理解其原理，解决方案就自动出来了（感觉好废话）。但像其对vm模块的应用这些更深层次的原理还有待进一步研究，相信如果进一步使用Vue-SSR的话，这部分的内容也需要进一步的了解。</p>
 
-      
-    </div>
-</article>
 
-    </li>
-  
-    <li>
-      <article class='ListView'>
-    <header class="title">
       
-        <h1>
-          <a href="/2017/05/15/异步编程的异常处理/">异步编程的异常处理</a>
-        </h1>
-      
-      <div class='ListMeta'>
-  <time datetime="2017-05-15T04:44:29.000Z" itemprop="datePublished">
-    2017-05-15
-  </time>
-  
-  | 
-  <ul>
+
+    </section>
     
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2017-07-23T15:44:44.000Z" itemprop="datePublished">
+              2017-07-23
+            </time>
+          </div>
+          
+            <div>
+              tags: 
   <li class="meta-text">
-  { <a href="/tags/前端/">前端</a> }
+  { <a href="/tags/vue-踩坑记录/">vue 踩坑记录</a> }
   </li>
 
-  </ul>
-  
-  
-</div>
-
-    </header>
-    <div>
-      
-        <blockquote>
-<p>本文主要参考自 @黄子毅 的 <a href="http://www.jianshu.com/p/78dfb38ac3d7" target="_blank" rel="external">Callback Promise Generator Async-Await 和异常处理的演进</a>, 对内容进行了一定的加工整理，并修改了原文中的一些错误。</p>
-</blockquote>
-<h2 id="回调"><a href="#回调" class="headerlink" title="回调"></a>回调</h2><p>1.无法捕获的异常<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">fetch</span>(<span class="params">callback</span>) </span>&#123;</div><div class="line">    setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</div><div class="line">        <span class="keyword">throw</span> <span class="built_in">Error</span>(<span class="string">'请求失败'</span>)</div><div class="line">    &#125;)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">try</span> &#123;</div><div class="line">    fetch(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</div><div class="line">        <span class="built_in">console</span>.log(<span class="string">'请求处理'</span>) <span class="comment">// 永远不会执行</span></div><div class="line">    &#125;)</div><div class="line">&#125; <span class="keyword">catch</span> (error) &#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'触发异常'</span>, error) <span class="comment">// 永远不会执行</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 程序崩溃</span></div><div class="line"><span class="comment">// Uncaught Error: 请求失败</span></div></pre></td></tr></table></figure></p>
-<p>执行回调时已经不是出于原本的执行栈了，Error发生在下一轮事件循环中，所以没有被<code>try...catch</code>捕获</p>
-        
-          <div class="more-link">
-            <a href="/2017/05/15/异步编程的异常处理/#more">Read On »</a>
-          </div>
-        
-      
-    </div>
+            </div>
+          
+      </section>
+    
+    
 </article>
 
-    </li>
   
-</ul>
-
+</div>
 
             <footer>
     <div>© 2016 - fung </div>
