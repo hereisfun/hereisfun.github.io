@@ -58,23 +58,22 @@
 
     <div class="container">
         <div data-pager-shell>
-            <div class="Archives">
+            <ul class="Index">
+  
+    <header class='PageTitle'>
+        <h1>{ vue }</h1>
+    </header>
   
   
-  
-    
-    <section class="TimeSection">
-    <h1 class="time-section-year">
-        2017
-    </h1>
-    <ul class="time-section-list">
+    <li>
+      <article class='ListView'>
+    <header class="title">
       
+        <h1>
+          <a href="/2017/07/23/Vue-SSR踩坑小记/">Vue-SSR踩坑小记</a>
+        </h1>
       
-        <li>
-            <a href="/2017/07/23/Vue-SSR踩坑小记/">
-                <h2>Vue-SSR踩坑小记</h2>
-            </a>
-            <div class='ListMeta'>
+      <div class='ListMeta'>
   <time datetime="2017-07-23T15:44:44.000Z" itemprop="datePublished">
     2017-07-23
   </time>
@@ -95,36 +94,29 @@
   
 </div>
 
-        </li>
+    </header>
+    <div>
       
-        <li>
-            <a href="/2017/05/15/异步编程的异常处理/">
-                <h2>异步编程的异常处理</h2>
-            </a>
-            <div class='ListMeta'>
-  <time datetime="2017-05-15T04:44:29.000Z" itemprop="datePublished">
-    2017-05-15
-  </time>
-  
-  | 
-  <ul>
-    
-  <li class="meta-text">
-  { <a href="/tags/前端/">前端</a> }
-  </li>
-
-  </ul>
-  
-  
-</div>
-
-        </li>
+        <blockquote>
+<p>写在前面：本文只是Vue-SSR的踩坑记录，Vue-SSR的具体介绍情看官方文档及官方HackerNews demo.</p>
+</blockquote>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>服务端渲染技术其实早已存在，早期的静态内容站点（如博客等）大多采用后端模板+上下文来进行服务端渲染。随着前端框架的兴起（React、Vue、Angular等）和网络性能的提升，趋势又逐渐转移到客户端渲染。然而，服务端渲染还是有着两个重要的优势：<strong>SEO友好</strong>和<strong>首屏渲染速度快</strong></p>
+<h2 id="踩坑小记"><a href="#踩坑小记" class="headerlink" title="踩坑小记"></a>踩坑小记</h2><h3 id="让人又爱又恨的官方文档与示例："><a href="#让人又爱又恨的官方文档与示例：" class="headerlink" title="让人又爱又恨的官方文档与示例："></a>让人又爱又恨的官方文档与示例：</h3><p>截止到目前，Vue-SSR的官方详细文档的中文版已经出炉，配合官方的HackerNews示例基本可以解决大部分的SPA问题。主要问题出在数据预取上。（不过其实Vue-SSR的核心用法已在<a href="https://ssr.vuejs.org/zh/basic.html" target="_blank" rel="external">基本用法</a>中说明清楚，而数据预取的方案可以有很多，官方方案只是其中的一个可选的解决方案而已）</p>
+        
+          <div class="more-link">
+            <a href="/2017/07/23/Vue-SSR踩坑小记/#more">Read On »</a>
+          </div>
+        
       
-    </ul>
-</section>
+    </div>
+</article>
 
+    </li>
   
-</div>
+</ul>
+
+
+
             <footer>
     <div>© 2016 - fung </div>
     <div>
