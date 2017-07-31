@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Fung的肠粉店</title>
+  <title>多段落多行文本溢出省略号的实现 | Fung的肠粉店</title>
   
     <link rel="icon" href="/favicon.png">
   
@@ -58,46 +58,14 @@
 
     <div class="container">
         <div data-pager-shell>
-            <ul class="Index">
-  
+            <div>
+  <article class='ContentView'>
     <header class='PageTitle'>
-        <h1>{ 前端 }</h1>
+        <h1>多段落多行文本溢出省略号的实现</h1>
     </header>
-  
-  
-    <li>
-      <article class='ListView'>
-    <header class="title">
-      
-        <h1>
-          <a href="/2017/07/31/多段落多行文本溢出省略号的实现/">多段落多行文本溢出省略号的实现</a>
-        </h1>
-      
-      <div class='ListMeta'>
-  <time datetime="2017-07-31T15:31:44.000Z" itemprop="datePublished">
-    2017-07-31
-  </time>
-  
-  | 
-  <ul>
-    
-  <li class="meta-text">
-  { <a href="/tags/前端/">前端</a> }
-  </li>
 
-  <li class="meta-text">
-  { <a href="/tags/样式/">样式</a> }
-  </li>
-
-  </ul>
-  
-  
-</div>
-
-    </header>
-    <div>
-      
-        <h1 id="多段落多行文本溢出省略号"><a href="#多段落多行文本溢出省略号" class="headerlink" title="多段落多行文本溢出省略号"></a>多段落多行文本溢出省略号</h1><p>有时候我们需要实现多行文本溢出显示省略号的效果<br>如:<br><img src="http://i4.eiimg.com/1949/32ea60b00e28caf2.png" alt="目标效果"></p>
+    <section>
+      <h1 id="多段落多行文本溢出省略号"><a href="#多段落多行文本溢出省略号" class="headerlink" title="多段落多行文本溢出省略号"></a>多段落多行文本溢出省略号</h1><p>有时候我们需要实现多行文本溢出显示省略号的效果<br>如:<br><img src="http://i4.eiimg.com/1949/32ea60b00e28caf2.png" alt="目标效果"></p>
 <p>这个效果可以通过webkit的私有属性实现，以上限三行为例：<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="selector-class">.multi-line</span> &#123;</div><div class="line">      <span class="attribute">display</span>: -webkit-box;</div><div class="line">      <span class="attribute">-webkit-box-orient</span>: vertical;</div><div class="line">      <span class="attribute">-webkit-line-clamp</span>: <span class="number">3</span>;</div><div class="line">      <span class="attribute">overflow</span>: hidden;</div><div class="line">      &#125;</div></pre></td></tr></table></figure></p>
 <p>对于单个段落这个样式就够用了，但是当有多个段落时情况就不一样了<br>例如当后端以换行符的形式返回多段落文本时：</p>
 <p><img src="http://i4.eiimg.com/1949/e762fc69bf0ab39d.png" alt="后端返回"></p>
@@ -114,59 +82,38 @@
 <p>为了使过渡效果生效，我们需要明确知道它具体从多少<code>px</code>变到了多少<code>px</code>。那我们只需要在一开始设<code>height:auto;</code>，<code>-webkit-line-clamp: initial;</code>,用js计算出实际高度并存起来，如果超出3行，就设定到3行的高度和<code>-webkit-line-clamp: 3;</code>,这时切换样式就会有过渡效果了。</p>
 <p>（实际上这也是<a href="https://aerotwist.com/blog/flip-your-animations/" target="_blank" rel="external">高性能动画队列FILP</a>的原理)</p>
 
-      
-    </div>
-</article>
 
-    </li>
-  
-    <li>
-      <article class='ListView'>
-    <header class="title">
       
-        <h1>
-          <a href="/2017/05/15/异步编程的异常处理/">异步编程的异常处理</a>
-        </h1>
-      
-      <div class='ListMeta'>
-  <time datetime="2017-05-15T04:44:29.000Z" itemprop="datePublished">
-    2017-05-15
-  </time>
-  
-  | 
-  <ul>
+
+    </section>
     
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2017-07-31T15:31:44.000Z" itemprop="datePublished">
+              2017-07-31
+            </time>
+          </div>
+          
+            <div>
+              tags: 
   <li class="meta-text">
   { <a href="/tags/前端/">前端</a> }
   </li>
 
-  </ul>
-  
-  
-</div>
+  <li class="meta-text">
+  { <a href="/tags/样式/">样式</a> }
+  </li>
 
-    </header>
-    <div>
-      
-        <blockquote>
-<p>本文主要参考自 @黄子毅 的 <a href="http://www.jianshu.com/p/78dfb38ac3d7" target="_blank" rel="external">Callback Promise Generator Async-Await 和异常处理的演进</a>, 对内容进行了一定的加工整理，并修改了原文中的一些错误。</p>
-</blockquote>
-<h2 id="回调"><a href="#回调" class="headerlink" title="回调"></a>回调</h2><p>1.无法捕获的异常<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">fetch</span>(<span class="params">callback</span>) </span>&#123;</div><div class="line">    setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</div><div class="line">        <span class="keyword">throw</span> <span class="built_in">Error</span>(<span class="string">'请求失败'</span>)</div><div class="line">    &#125;)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">try</span> &#123;</div><div class="line">    fetch(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</div><div class="line">        <span class="built_in">console</span>.log(<span class="string">'请求处理'</span>) <span class="comment">// 永远不会执行</span></div><div class="line">    &#125;)</div><div class="line">&#125; <span class="keyword">catch</span> (error) &#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'触发异常'</span>, error) <span class="comment">// 永远不会执行</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 程序崩溃</span></div><div class="line"><span class="comment">// Uncaught Error: 请求失败</span></div></pre></td></tr></table></figure></p>
-<p>执行回调时已经不是出于原本的执行栈了，Error发生在下一轮事件循环中，所以没有被<code>try...catch</code>捕获</p>
-        
-          <div class="more-link">
-            <a href="/2017/05/15/异步编程的异常处理/#more">Read On »</a>
-          </div>
-        
-      
-    </div>
+            </div>
+          
+      </section>
+    
+    
 </article>
 
-    </li>
   
-</ul>
-
-
+</div>
 
             <footer>
     <div>© 2016 - fung </div>
