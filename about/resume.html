@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>前端开发_冯常殷_中山大学</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="created" content="2017-07-25T21:49:50+0800" />
+    <meta name="modified" content="2017-08-05T17:12:44+0800" />
+    <meta name="tags" content="" />
+    <meta name="last device" content="fung的MacBook Air" />
+    <style>
+        html,
+        body,
+        div,
+        span,
+        applet,
+        object,
+        iframe,
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        p,
+        blockquote,
+        pre,
+        a,
+        abbr,
+        acronym,
+        address,
+        big,
+        cite,
+        code,
+        del,
+        dfn,
+        em,
+        img,
+        ins,
+        kbd,
+        q,
+        s,
+        samp,
+        small,
+        strike,
+        strong,
+        sub,
+        sup,
+        tt,
+        var,
+        b,
+        u,
+        i,
+        center,
+        dl,
+        dt,
+        dd,
+        ol,
+        ul,
+        li,
+        fieldset,
+        form,
+        label,
+        legend,
+        table,
+        caption,
+        tbody,
+        tfoot,
+        thead,
+        tr,
+        th,
+        td,
+        article,
+        aside,
+        canvas,
+        details,
+        embed,
+        figure,
+        figcaption,
+        footer,
+        header,
+        hgroup,
+        menu,
+        nav,
+        output,
+        ruby,
+        section,
+        summary,
+        time,
+        mark,
+        audio,
+        video {
+            margin: 0;
+            padding: 0;
+            border: 0;
+            font: inherit;
+            font-size: 100%;
+            vertical-align: baseline
+        }
+
+        html {
+            line-height: 1
+        }
+
+        ol,
+        ul {
+            list-style: none
+        }
+
+        table {
+            border-collapse: collapse;
+            border-spacing: 0
+        }
+
+        caption,
+        th,
+        td {
+            text-align: left;
+            font-weight: normal;
+            vertical-align: middle
+        }
+
+        q,
+        blockquote {
+            quotes: none
+        }
+
+        q:before,
+        q:after,
+        blockquote:before,
+        blockquote:after {
+            content: "";
+            content: none
+        }
+
+        a img {
+            border: none
+        }
+
+        article,
+        aside,
+        details,
+        figcaption,
+        figure,
+        footer,
+        header,
+        hgroup,
+        main,
+        menu,
+        nav,
+        section,
+        summary {
+            display: block
+        }
+
+        * {
+            -moz-box-sizing: border-box;
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box
+        }
+
+        html {
+            font-size: 87.5%;
+            line-height: 1.57143em
+        }
+
+        html {
+            font-size: 14px;
+            line-height: 1.6em;
+            -webkit-text-size-adjust: 100%
+        }
+
+        body {
+            background: #fcfcfc;
+            color: #545454;
+            text-rendering: optimizeLegibility;
+            font-family: "AvenirNext-Regular"
+        }
+
+        a {
+            /* color: #de4c4f; */
+            color: #0072cb;
+            text-decoration: none
+        }
+
+        h1 {
+            font-family: "AvenirNext-Regular";
+            color: #333;
+            font-size: 1.6em;
+            line-height: 1.3em;
+            margin-bottom: .78571em
+        }
+
+        h2 {
+            font-family: "AvenirNext-Regular";
+            color: #333;
+            font-size: 1.3em;
+            line-height: 1em;
+            margin-bottom: .62857em
+        }
+
+        h3 {
+            font-family: "AvenirNext-Regular";
+            color: #333;
+            font-size: 1.15em;
+            line-height: 1em;
+            margin-bottom: .47143em
+        }
+
+        p {
+            margin-bottom: 1.57143em;
+            hyphens: auto
+        }
+
+        hr {
+            height: 1px;
+            border: 0;
+            background-color: #dedede;
+            margin: -1px auto 1.57143em auto
+        }
+
+        ul,
+        ol {
+            margin-bottom: 1.57143em
+        }
+
+        ul ul,
+        ul ol,
+        ol ul,
+        ol ol {
+            margin-bottom: 0px
+        }
+
+        ol li:before {
+            content: counter(ol) ".";
+            counter-increment: ol;
+            color: #e06e73;
+            text-align: right;
+            display: inline-block;
+            min-width: 1em;
+            margin-right: 0.5em
+        }
+
+        /* b,
+        strong {
+            font-family: "AvenirNext-Bold"
+        } */
+
+        i,
+        em {
+            font-family: "AvenirNext-Italic"
+        }
+
+        code {
+            font-family: "Menlo-Regular"
+        }
+
+        .text-overflow-ellipsis {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap
+        }
+
+        .sf_code_syntax_string {
+            color: #D33905
+        }
+
+        .sf_code_syntax_comment {
+            color: #838383
+        }
+
+        .sf_code_syntax_documentation_comment {
+            color: #128901
+        }
+
+        .sf_code_syntax_number {
+            color: #0E73A2
+        }
+
+        .sf_code_syntax_project {
+            color: #5B2599
+        }
+
+        .sf_code_syntax_keyword {
+            color: #0E73A2
+        }
+
+        .sf_code_syntax_character {
+            color: #1B00CE
+        }
+
+        .sf_code_syntax_preprocessor {
+            color: #920448
+        }
+
+        .note-wrapper {
+            max-width: 46em;
+            margin: 0px auto;
+            padding: 1.57143em 3.14286em
+        }
+
+        .note-wrapper.spotlight-preview {
+            overflow-x: hidden
+        }
+
+        u {
+            text-decoration: none;
+            background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0) 50%, #e06e73 50%);
+            background-repeat: repeat-x;
+            background-size: 2px 2px;
+            background-position: 0 1.05em
+        }
+
+        s {
+            color: #878787
+        }
+
+        p {
+            margin-bottom: 0.1em
+        }
+
+        hr {
+            margin-bottom: 0.7em;
+            margin-top: 0.7em
+        }
+
+        ul li {
+            text-indent: -0.6em
+        }
+
+        ul li:before {
+            content: "•";
+            /* color: #e06e73; */
+             color: #0072cb; 
+            display: inline-block;
+            /* margin-right: 0.3em */
+             margin-right: 0.6em 
+        }
+
+        ul ul {
+            margin-left: 1.25714em
+        }
+
+        ol li {
+            text-indent: -1.55em
+        }
+
+        ol ol {
+            margin-left: 1.25714em
+        }
+
+        blockquote {
+            display: block;
+            margin-left: -1em;
+            padding-left: 0.8em;
+            border-left: 0.2em solid #e06e73
+        }
+
+        .todo-list ul {
+            margin-left: 1.88571em
+        }
+
+        .todo-list li {
+            text-indent: -1.75em
+        }
+
+        .todo-list li:before {
+            content: "";
+            display: static;
+            margin-right: 0px
+        }
+
+        .todo-checkbox {
+            text-indent: -1.7em
+        }
+
+        .todo-checkbox svg {
+            margin-right: 0.3em;
+            position: relative;
+            top: 0.2em
+        }
+
+        .todo-checkbox svg #check {
+            display: none
+        }
+
+        .todo-checkbox.todo-checked #check {
+            display: inline
+        }
+
+        .todo-checkbox.todo-checked .todo-text {
+            text-decoration: line-through;
+            color: #878787
+        }
+
+        .code-inline {
+            display: inline-block;
+            background: white;
+            border: solid 1px #dedede;
+            padding: 0.0em 0.5em;
+            font-size: 0.9em
+        }
+
+        .code-multiline {
+            display: block;
+            background: white;
+            border: solid 1px #dedede;
+            padding: 0.7em 1em;
+            font-size: 0.9em;
+            overflow-x: auto
+        }
+
+        .hashtag {
+            display: inline-block;
+            color: white;
+            background: #b8bfc2;
+            padding: 0.0em 0.5em;
+            border-radius: 1em;
+            text-indent: 0
+        }
+
+        .hashtag a {
+            color: #fff
+        }
+
+        .address a {
+            color: #545454;
+            background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0) 50%, #0da35e 50%);
+            background-repeat: repeat-x;
+            background-size: 2px 2px;
+            background-position: 0 1.05em
+        }
+
+        .address svg {
+            position: relative;
+            top: 0.2em;
+            display: inline-block;
+            margin-right: 0.2em
+        }
+
+        .color-preview {
+            display: inline-block;
+            width: 1em;
+            height: 1em;
+            border: solid 1px rgba(0, 0, 0, 0.3);
+            border-radius: 50%;
+            margin-right: 0.1em;
+            position: relative;
+            top: 0.2em;
+            white-space: nowrap
+        }
+
+        .color-code {
+            margin-right: 0.2em;
+            font-family: "Menlo-Regular";
+            font-size: 0.9em
+        }
+
+        .color-hash {
+            opacity: 0.4
+        }
+
+        .ordered-list-number {
+            color: #e06e73;
+            text-align: right;
+            display: inline-block;
+            min-width: 1em
+        }
+
+        .arrow svg {
+            position: relative;
+            top: 0.08em;
+            display: inline-block;
+            margin-right: 0.15em;
+            margin-left: 0.15em
+        }
+
+        .arrow svg #rod {
+            stroke: #545454
+        }
+
+        .arrow svg #point {
+            fill: #545454
+        }
+
+        mark {
+            color: inherit;
+            display: inline-block;
+            padding: 0px 4px;
+            background-color: #fcffc0
+        }
+
+        img {
+            max-width: 100%;
+            height: auto
+        }
+        /* custom  */
+        /* font-family reset */
+        h1,h2,h3,h4,h5,h6,li,span,b,strong,div {
+            font-family: 'Source Han Sans CN, mononoki';
+        }
+        ul {
+            margin-bottom: 1em;
+        }
+        li {
+            margin: .15em 0;
+        }
+        hr {
+            margin-bottom: 1em;
+        }
+        b,h2,h3 {
+            font-weight: bold;
+        }
+        h3 {
+            font-size: 1.1em;
+        }
+        .contact b{
+            display: inline-block; 
+            min-width: 3em;
+            margin-left: .6em;
+        }
+        .info b,
+        .info span {
+            display: inline-block;
+            margin-left: .6em;
+            min-width: 4.5em;
+        }
+        .skills b {
+            display: inline-block;
+            margin-left: .6em;
+            min-width: 4.6em;
+        }
+        /* h3>span:first-child, h4>span:first-child {
+            display: inline-block;
+            padding-right: 6em;
+        } */
+        /* .text-right {
+            float: right;
+        } */
+        h3, h4 {
+            display: flex;
+            justify-content: space-between;
+        }
+        span.education, span.expect {
+            display: inline;
+            margin-left: 1em;
+        }
+        .contact {
+            position: relative;
+        }
+        .photo {
+            position: absolute;
+            top: -2.5em;
+            right: 0;
+            height: 115px;
+        }
+        @media print {
+            hr {
+                border-bottom: 1px solid #dedede;
+            }
+            a {
+                color: #0072cb;
+            }
+            li:before {
+                color: #0072cb;
+            }
+            /* ul {
+                border-bottom: 1px #000 solid;
+            } */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="note-wrapper">
+        <h2>联系方式</h2>
+        <ul class="contact">
+            <li><b>手机：</b> <span>138-2625-4843</span>
+            </li>
+            <li><b>Email：</b> <a href="mailto:calvinfung6@gmail.com">calvinfung6@gmail.com</a>
+            </li>
+            <li><b>QQ：</b> 137894413
+            </li>
+            <img class="photo" src="http://ou7vmdht2.bkt.clouddn.com/%E5%B8%B8%E7%94%A81%E5%AF%B82.jpg" alt="">
+        </ul>
+        <hr>
+        <h2>个人信息</h2>
+        <ul class="info">
+            <li><span>冯常殷／男／1995</span> <span class="education">本科／中山大学化学系</span>
+            </li>
+            <li><b>求职意向：</b> 前端开发工程师 <span class="expect">广州／深圳／杭州／北京</span>
+            </li>
+            <li><b>技术博客：</b> <a href="https://hereisfun.github.io">https://hereisfun.github.io</a>
+            </li>
+            <li><b>GitHub：</b> <a href="https://github.com/hereisfun">https://github.com/hereisfun</a>
+            </li>
+        </ul>
+        <hr>
+        <h2>实习经历</h2>
+        <h3><span class="main">今日头条（字节跳动网络技术有限公司）</span> <span class="text-right">2017.5～至今</span></h3>
+        <h4><span class="main">今日头条APP—财经垂直频道改版</span> <span class="text-right">前端开发工程师</span></h4>
+        <ul class="intern">
+            <li>迅速掌握并使用Vue技术栈完成多个页面的重构，进行了移动端多屏适配。
+            </li>
+            <li>布置了Vue-SSR，并作出降级方案。将首屏渲染时间减少了40%，提高了用户体验。
+            </li>
+            <li>重构过程中编写了可复用的公共组件（如下拉刷新-上拉加载组件、加载蒙层组件等）。
+            </li>
+            <li>保持文档驱动，配合后台进行接口对接、配合客户端完成了JSBridge的架设。
+            </li>
+        </ul>
+        <hr>
+        <h2>项目经历</h2>
+        <h3><span class="main">厚朴工作室梨山风华项目组</span> <span class="text-right">2016.10～2016.11</span></h3>
+        <h4><span class="main">主站改版</span> <span class="text-right">前端开发工程师</span></h4>
+        <ul class="project">
+            <li>对原有页面进行响应式重构，满足了移动端的阅读浏览体验。
+            </li>
+        </ul>
+        <hr>
+        <h2>作品</h2>
+        <ul class="works">
+            <li><b>Lemon-UI: 主要基于Vue.js的UI组件：</b><a href="https://github.com/hereisfun/Lemon-UI">https://github.com/hereisfun/Lemon-UI</a>
+            </li>
+            <li>基于canvas的简单的手势密码组件：<a href="https://github.com/hereisfun/pattern-lock">https://github.com/hereisfun/pattern-lock</a>
+            </li>
+            <li>多人协作的Todo工具：<a href="https://github.com/hereisfun/todo-demo-withDB">https://github.com/hereisfun/todo-demo-withDB</a>
+            </li>
+        </ul>
+        <hr>
+        <h2>技能清单</h2>
+        <ul class="skills">
+            <li><b>Web开发：</b>熟悉HTML5、CSS3、ECMAScript、了解Node.js。熟悉Vue、了解React。
+            </li>
+            <li><b>前端工程：</b>熟练使用ES6、CMD规范进行模块化开发、了解Gulp、Webpack、Sass、会使用Mocha进行单元测试。对前端加密有一定认识。
+            </li>
+            <li><b>CS基础：</b>了解基本的数据结构与算法、了解常见设计模式、了解HTTP协议
+            </li>
+        </ul>
+    </div>
+    <script type="text/javascript">
+        (function () {
+
+            var doc_ols = document.getElementsByTagName("ol");
+
+            for (i = 0; i < doc_ols.length; i++) {
+
+                var ol_start = doc_ols[i].getAttribute("start") - 1;
+                doc_ols[i].setAttribute("style", "counter-reset:ol " + ol_start + ";");
+
+            }
+
+        })();
+    </script>
+</body>
+
+</html>
