@@ -97,7 +97,7 @@
     </header>
     <div>
       
-        <p>有时候我们需要实现多行文本溢出显示省略号的效果<br>如:<br><img src="http://ou7vmdht2.bkt.clouddn.com/%E7%9B%AE%E6%A0%87%E6%95%88%E6%9E%9C.png" alt="目标效果"></p>
+        <p>有时候我们需要实现多行文本溢出显示省略号的效果<br>例如:<br><img src="http://ou7vmdht2.bkt.clouddn.com/%E7%9B%AE%E6%A0%87%E6%95%88%E6%9E%9C.png" alt="目标效果"></p>
 <p>这个效果可以通过webkit的私有属性实现，以上限三行为例：<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="selector-class">.multi-line</span> &#123;</div><div class="line">      <span class="attribute">display</span>: -webkit-box;</div><div class="line">      <span class="attribute">-webkit-box-orient</span>: vertical;</div><div class="line">      <span class="attribute">-webkit-line-clamp</span>: <span class="number">3</span>;</div><div class="line">      <span class="attribute">overflow</span>: hidden;</div><div class="line">      &#125;</div></pre></td></tr></table></figure></p>
 <p>对于单个段落这个样式就够用了，但是当有多个段落时情况就不一样了<br>
         
