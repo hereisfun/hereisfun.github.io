@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>mpvue 构建优化记录 | Fung的肠粉店</title>
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url(/assets/header.png)">
+        <div class='av-pic' style="background-image: url(/assets/tree_small.png)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Fung的肠粉店</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/about/" class="Btn">
+              <li>About</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+            
+                <a href="https://github.com/hereisfun">
+                    <img src="/assets/github.svg" />
+                </a>
+            
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>mpvue 构建优化记录</h1>
+    </header>
+
+    <section>
+      <blockquote>
+<p>本文在mpvue提供的默认项目模板的基础上，对webpack构建过程进行了优化，使其更加符合大型的小程序项目。</p>
+<h2 id="1-清理废弃页面"><a href="#1-清理废弃页面" class="headerlink" title="1. 清理废弃页面"></a>1. 清理废弃页面</h2><p>随着产品的快速迭代，项目里的部分页面会逐渐下线。为了避免下线的页面突然又要重新上线，开发同学一般会把下线页面的代码保留，仅仅在<code>app.json</code>里移除掉相应的页面。</p>
+</blockquote>
+<p>但细心的同学可能会发现，尽管已经在<code>app.json</code>里移除了相应页面的路径，在编译出来的dist文件夹仍然能发现已下线页面的身影，这是为什么呢？</p>
+<a id="more"></a>
+<p>答案就在<code>webpack.base.config.js</code>里的这段代码里：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">resolve</span> (<span class="params">dir</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> path.join(__dirname, <span class="string">'..'</span>, dir)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">getEntry</span> (<span class="params">rootSrc</span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> map = &#123;&#125;;</div><div class="line">  glob.sync(rootSrc + <span class="string">'/pages/**/main.js'</span>)</div><div class="line">  .forEach(<span class="function"><span class="params">file</span> =&gt;</span> &#123;</div><div class="line">    <span class="keyword">var</span> key = relative(rootSrc, file).replace(<span class="string">'.js'</span>, <span class="string">''</span>);</div><div class="line">    map[key] = file;</div><div class="line">  &#125;)</div><div class="line">   <span class="keyword">return</span> map;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">const</span> appEntry = &#123; <span class="attr">app</span>: resolve(<span class="string">'./src/main.js'</span>) &#125;</div><div class="line"><span class="keyword">const</span> pagesEntry = getEntry(resolve(<span class="string">'./src'</span>), <span class="string">'pages/**/main.js'</span>)</div><div class="line"><span class="keyword">const</span> entry = <span class="built_in">Object</span>.assign(&#123;&#125;, appEntry, pagesEntry)</div></pre></td></tr></table></figure></p>
+<p>可以看到mpvue的做法是去遍历<code>src/pages</code>目录下的所有<code>main.js</code>文件, 将他们所在的路径作为webapck的entry，参与编译。因此即使的已经从<code>app.json</code>里移除了下线页面，只要他们的<code>main.js</code>还在，就还会被编译。</p>
+<p>那么最简单的解决方法显而易见——将下线页面的<code>main.js</code>改名，例如改成<code>main-old.js</code>就不会被编译了。</p>
+<p>可是手动改文件名来下线页面实在是太蠢了，有没有更自动一点的方法呢？答案是肯定的。</p>
+<p>我们能看到，其实我们需要编译哪些页面，全都已经写在<code>app.json</code>里了。（什么？你说你<code>app.json</code>里也没有删掉下线页面？那你可以被拖出去打了）</p>
+<p>app.json:<br><figure class="highlight json"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  <span class="attr">"pages"</span>: [</div><div class="line">		<span class="string">"pages/index/home/main"</span>,</div><div class="line">		// ... </div><div class="line">  ],</div><div class="line">  <span class="attr">"subpackages"</span>: [</div><div class="line">    &#123;</div><div class="line">      <span class="attr">"root"</span>: <span class="string">"pages/sub"</span>,</div><div class="line">      <span class="attr">"pages"</span>: [</div><div class="line">        <span class="string">"card/main"</span></div><div class="line">      ]</div><div class="line">    &#125;</div><div class="line">  ]</div><div class="line">  // ...</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>那么其实我们只要根据<code>app.json</code>里的页面来改写<code>getEntry</code>方法就好了，改写完后的代码如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">getEntry</span>(<span class="params">rootSrc, globPattern</span>) </span>&#123;</div><div class="line">  <span class="comment">// 提取app.json里的页面清单</span></div><div class="line">  <span class="keyword">const</span> appJson = <span class="built_in">require</span>(<span class="string">'../src/app.json'</span>)</div><div class="line">	<span class="comment">// 复制一份，避免改写require缓存里的app.json数据</span></div><div class="line">  <span class="keyword">const</span> appJsonPages = appJson.pages.slice()</div><div class="line">	<span class="comment">// 处理分包页面</span></div><div class="line">  <span class="keyword">if</span> (appJson.subpackages) &#123;</div><div class="line">    appJson.subpackages.forEach(<span class="function"><span class="params">package</span> =&gt;</span> &#123;</div><div class="line">      package.pages.forEach(<span class="function"><span class="params">subPage</span> =&gt;</span> appJsonPages.push(<span class="string">`<span class="subst">$&#123;package.root&#125;</span>/<span class="subst">$&#123;subPage&#125;</span>`</span>))</div><div class="line">    &#125;)</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">var</span> map = &#123;&#125;;</div><div class="line">  glob.sync(globPattern)</div><div class="line">    .forEach(<span class="function"><span class="params">file</span> =&gt;</span> &#123;</div><div class="line">      <span class="keyword">var</span> key = relative(rootSrc, file).replace(<span class="string">'.js'</span>, <span class="string">''</span>);</div><div class="line">      <span class="comment">// relative取出来的路径的分隔符跟系统有关，而app.json则是固定用/分割</span></div><div class="line">      <span class="keyword">const</span> keyWithSep = key.split(path.sep).join(<span class="string">'/'</span>)</div><div class="line">      <span class="keyword">if</span> (appJsonPages.includes(keyWithSep)) &#123;</div><div class="line">		  <span class="comment">// 在app.json里的页面才会被放进entry</span></div><div class="line">        map[key] = file;</div><div class="line">      &#125; <span class="keyword">else</span> &#123;</div><div class="line">		  <span class="comment">// 否则在控制台提示</span></div><div class="line">        <span class="built_in">console</span>.log(<span class="string">`[:exclamation:注意:exclamation:] 页面 <span class="subst">$&#123;key&#125;</span> 不在app.json中，没有被编译`</span>)</div><div class="line">      &#125;</div><div class="line">    &#125;)</div><div class="line">  <span class="keyword">return</span> map;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这样我们就只需要对<code>app.json</code>进行删减，就能够轻松下线页面啦。</p>
+<h2 id="2-处理分包的公共代码"><a href="#2-处理分包的公共代码" class="headerlink" title="2. 处理分包的公共代码"></a>2. 处理分包的公共代码</h2><p>小程序其实可以看作是一个多页应用，在启动时只会下载主包的页面及公共代码，当跳转到分包页面时，才会开始下载分包页面的代码。</p>
+<blockquote>
+<p>更多分包的介绍详见官方文档：<a href="https://developers.weixin.qq.com/miniprogram/dev/framework/subpackages.html" target="_blank" rel="external">分包加载 | 微信开放文档</a>  </p>
+</blockquote>
+<p>在某次编译的时候，微信开发者工具突然提示<code>common/vendor.js</code>文件体积大于500KB, 不会被执行ES6转ES5。令人奇怪的是最近一段时间主包代码并没有什么大改动，主要都是在分包新增页面，为什么公共的<code>common/vendor.js</code>体积会变大呢？</p>
+<p>使用<code>webpack-bundle-analyzer</code>查看了一下<code>common/vendor.js</code>的构成，意外的发现里面居然包含了不少分包的公共代码！本来使用分包，就是为了减小主包体积，加快启动速度。结果现在主包里却包含了主包里不会执行的分包代码，显然是不符合我们预期的。</p>
+<p>老规矩，直接去看webpack相应的配置：<br>查阅资料得知，<code>common/vendor.js</code>是webpack插件<code>CommonsChunkPlugin</code>用来提取公共代码的（吐槽一句：该插件已经在webpack4中被移除，可惜没人维护的mpvue一直没支持webpack4）。</p>
+<p>而默认模板里<code>commonChunksPlugin</code>是这么写的：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// webpack.dev.config.js</span></div><div class="line"></div><div class="line">    <span class="keyword">new</span> webpack.optimize.CommonsChunkPlugin(&#123;</div><div class="line">      name: <span class="string">'common/vendor'</span>,</div><div class="line">      minChunks: <span class="function"><span class="keyword">function</span> (<span class="params">module, count</span>) </span>&#123;</div><div class="line">        <span class="comment">// any required modules inside node_modules are extracted to vendor</span></div><div class="line">        <span class="keyword">return</span> (</div><div class="line">          <span class="built_in">module</span>.resource &amp;&amp;</div><div class="line">          /\.js$/.test(<span class="built_in">module</span>.resource) &amp;&amp;</div><div class="line">          <span class="built_in">module</span>.resource.indexOf(<span class="string">'node_modules'</span>) &gt;= <span class="number">0</span></div><div class="line">        ) || count &gt; <span class="number">1</span></div><div class="line">      &#125;</div><div class="line">    &#125;),</div></pre></td></tr></table></figure></p>
+<p>上面的代码会将引用到的npm包或者引用次数&gt;1的代码提取到<code>common/vendor.js</code>里，这也就是为什么<code>common/vendor.js</code>会包含分包代码的原因了——因为分包里存在引用次数&gt;1的代码。</p>
+<p>我们的改造方向其实也很清楚：只要将分包的公共代码，放回分包里面就好了。</p>
+<p>查询<a href="https://webpack.js.org/plugins/commons-chunk-plugin/" target="_blank" rel="external">CommonsChunkPlugin的文档</a>可知，该插件有一个可选参数chunks，用来指定提取公共代码的chunks范围。</p>
+<p>什么是chunk呢？ 简单来说就是webpack里通过entry解析出来的一块相互依赖的资源，在小程序的场景下，可以简单将chunk看作小程序的页面。</p>
+<p>如果你对上文的<code>getEntry</code>方法有印象，就能发现其实entry这个对象里的key就是这个页面的chunk name。如果你没有魔改过相关代码，那么页面的chunk name同时也等于它的path。因此，我们只要根据分包的构成，新增多个<code>CommonsChunkPlugin</code>，将他们的chunks字段填上该分包的页面即可。</p>
+<p>改良后的代码如下：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// webpack.dev.config.js/webpack.prod.config.js</span></div><div class="line"></div><div class="line"><span class="keyword">const</span> appJson = <span class="built_in">require</span>(<span class="string">'../src/app.json'</span>)</div><div class="line"><span class="keyword">const</span> subpackages = &#123;&#125;</div><div class="line"></div><div class="line"><span class="comment">// 预处理一下分包的数据，变成 &#123;分包根路径：分包页面数组&#125; 的格式</span></div><div class="line"><span class="keyword">if</span> (appJson.subpackages) &#123;</div><div class="line">  appJson.subpackages.forEach(<span class="function"><span class="params">package</span> =&gt;</span> &#123;</div><div class="line">    subpackages[package.root] = []</div><div class="line">    package.pages.forEach(<span class="function"><span class="params">subPage</span> =&gt;</span> subpackages[package.root].push(path.join(package.root, subPage)))</div><div class="line">  &#125;)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">const</span> subPackageCommonChunks = <span class="built_in">Object</span>.keys(subpackages).map(<span class="function"><span class="params">sub</span> =&gt;</span></div><div class="line">  <span class="keyword">new</span> webpack.optimize.CommonsChunkPlugin(&#123;</div><div class="line">	  <span class="comment">// 在分包目录下提取一个叫common的公共文件，注意使用path.join，兼容mac/windows</span></div><div class="line">    name: path.join(sub, <span class="string">'common'</span>),</div><div class="line">	  <span class="comment">// 分包下的页面数组</span></div><div class="line">    chunks: subpackages[sub],</div><div class="line">	  <span class="comment">// 引用次数大于等于2就被划进common</span></div><div class="line">    minChunks: <span class="number">2</span>,</div><div class="line">  &#125;)</div><div class="line">)</div><div class="line"></div><div class="line"><span class="comment">// 最后插在原本的commonsChunkPlulgin前</span></div><div class="line"><span class="built_in">module</span>.exports = merge(baseWebpackConfig, &#123;</div><div class="line">  <span class="comment">// ...</span></div><div class="line">  plugins: [</div><div class="line">    <span class="comment">// ...</span></div><div class="line">    <span class="comment">// 插在这里即可</span></div><div class="line">    ...subPackageCommonChunks,</div><div class="line">    <span class="keyword">new</span> webpack.optimize.CommonsChunkPlugin(&#123;</div><div class="line">      name: <span class="string">'common/vendor'</span>,</div><div class="line">      minChunks: <span class="function"><span class="keyword">function</span> (<span class="params">module, count</span>) </span>&#123;</div><div class="line">        <span class="comment">// any required modules inside node_modules are extracted to vendor</span></div><div class="line">        <span class="keyword">return</span> (</div><div class="line">          <span class="built_in">module</span>.resource &amp;&amp;</div><div class="line">          /\.js$/.test(<span class="built_in">module</span>.resource) &amp;&amp;</div><div class="line">          <span class="built_in">module</span>.resource.indexOf(<span class="string">'node_modules'</span>) &gt;= <span class="number">0</span></div><div class="line">        ) || count &gt; <span class="number">1</span></div><div class="line">      &#125;</div><div class="line">    &#125;)</div><div class="line">	]</div><div class="line">&#125;)</div></pre></td></tr></table></figure></p>
+<p>这时候再用<code>webpack-bundle-analyzer</code>看一下bundle构成，就会发现<code>common/vendor.js</code>里已经基本没什么分包的代码啦～</p>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>以上就是在使用mpvue开发过程过中对webpack构建过程作出的优化，分享给同样在使用mpvue做开发的小伙伴们。</p>
+<p>其实构建优化这里可以做的还有很多，例如公共样式的提取、将仅在分包使用的npm包打包进分包以及app.json新增不存在的路径时自动创建目录等，如果你有好的想法，欢迎一起来交流学习～</p>
+<p>最后说一句，如果你是准备开始一个新项目，请出门左转直接用原生语法写小程序吧，框架的坑实在太深了;( </p>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2019-11-23T16:18:32.000Z" itemprop="datePublished">
+              2019-11-24
+            </time>
+          </div>
+          
+            <div>
+              tags: 
+  <li class="meta-text">
+  { <a href="/tags/前端/">前端</a> }
+  </li>
+
+  <li class="meta-text">
+  { <a href="/tags/小程序/">小程序</a> }
+  </li>
+
+  <li class="meta-text">
+  { <a href="/tags/mpvue/">mpvue</a> }
+  </li>
+
+            </div>
+          
+      </section>
+    
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <div>© 2016 - fung </div>
+    <div>
+    Powered by Hexo
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+<script src="/js/pager/dist/singlepager.js"></script>
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

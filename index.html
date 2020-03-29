@@ -66,6 +66,109 @@
     <header class="title">
       
         <h1>
+          <a href="/2019/11/24/mpvue 构建优化记录/">mpvue 构建优化记录</a>
+        </h1>
+      
+      <div class='ListMeta'>
+  <time datetime="2019-11-23T16:18:32.000Z" itemprop="datePublished">
+    2019-11-24
+  </time>
+  
+  | 
+  <ul>
+    
+  <li class="meta-text">
+  { <a href="/tags/前端/">前端</a> }
+  </li>
+
+  <li class="meta-text">
+  { <a href="/tags/小程序/">小程序</a> }
+  </li>
+
+  <li class="meta-text">
+  { <a href="/tags/mpvue/">mpvue</a> }
+  </li>
+
+  </ul>
+  
+  
+</div>
+
+    </header>
+    <div>
+      
+        <blockquote>
+<p>本文在mpvue提供的默认项目模板的基础上，对webpack构建过程进行了优化，使其更加符合大型的小程序项目。</p>
+<h2 id="1-清理废弃页面"><a href="#1-清理废弃页面" class="headerlink" title="1. 清理废弃页面"></a>1. 清理废弃页面</h2><p>随着产品的快速迭代，项目里的部分页面会逐渐下线。为了避免下线的页面突然又要重新上线，开发同学一般会把下线页面的代码保留，仅仅在<code>app.json</code>里移除掉相应的页面。</p>
+</blockquote>
+<p>但细心的同学可能会发现，尽管已经在<code>app.json</code>里移除了相应页面的路径，在编译出来的dist文件夹仍然能发现已下线页面的身影，这是为什么呢？</p>
+        
+          <div class="more-link">
+            <a href="/2019/11/24/mpvue 构建优化记录/#more">Read On »</a>
+          </div>
+        
+      
+    </div>
+</article>
+
+    </li>
+  
+    <li>
+      <article class='ListView'>
+    <header class="title">
+      
+        <h1>
+          <a href="/2018/12/07/让taro用上自定义webpack配置吧/">让taro用上自定义webpack配置吧(taro的h5构建过程浅析)</a>
+        </h1>
+      
+      <div class='ListMeta'>
+  <time datetime="2018-12-07T06:37:29.000Z" itemprop="datePublished">
+    2018-12-07
+  </time>
+  
+  | 
+  <ul>
+    
+  <li class="meta-text">
+  { <a href="/tags/前端/">前端</a> }
+  </li>
+
+  <li class="meta-text">
+  { <a href="/tags/小程序/">小程序</a> }
+  </li>
+
+  <li class="meta-text">
+  { <a href="/tags/Taro/">Taro</a> }
+  </li>
+
+  </ul>
+  
+  
+</div>
+
+    </header>
+    <div>
+      
+        <blockquote>
+<p>Taro 是一套遵循 React 语法规范的多端开发解决方案。支持用 React 的开发方式编写一次代码，生成能运行在微信小程序和H5。</p>
+</blockquote>
+<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>事情的起源是因为需要对生成的H5应用高度个性化的 Webpack 配置，而 Taro 默认只提供了 <a href="https://github.com/neutrinojs/webpack-chain" target="_blank" rel="external">webpack-chain</a> 的方式来修改webpack，导致无法与组内通用的一份webpack config 直接合并（不能用webpack-merge）。不得已之下只好从taro源码寻求解决方案。</p>
+        
+          <div class="more-link">
+            <a href="/2018/12/07/让taro用上自定义webpack配置吧/#more">Read On »</a>
+          </div>
+        
+      
+    </div>
+</article>
+
+    </li>
+  
+    <li>
+      <article class='ListView'>
+    <header class="title">
+      
+        <h1>
           <a href="/2017/07/31/多段落多行文本溢出省略号的实现/">多段落多行文本溢出省略号的实现</a>
         </h1>
       

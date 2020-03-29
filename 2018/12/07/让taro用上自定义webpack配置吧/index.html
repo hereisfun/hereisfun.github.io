@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>让taro用上自定义webpack配置吧(taro的h5构建过程浅析) | Fung的肠粉店</title>
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url(/assets/header.png)">
+        <div class='av-pic' style="background-image: url(/assets/tree_small.png)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Fung的肠粉店</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/about/" class="Btn">
+              <li>About</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+            
+                <a href="https://github.com/hereisfun">
+                    <img src="/assets/github.svg" />
+                </a>
+            
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>让taro用上自定义webpack配置吧(taro的h5构建过程浅析)</h1>
+    </header>
+
+    <section>
+      <blockquote>
+<p>Taro 是一套遵循 React 语法规范的多端开发解决方案。支持用 React 的开发方式编写一次代码，生成能运行在微信小程序和H5。</p>
+</blockquote>
+<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>事情的起源是因为需要对生成的H5应用高度个性化的 Webpack 配置，而 Taro 默认只提供了 <a href="https://github.com/neutrinojs/webpack-chain" target="_blank" rel="external">webpack-chain</a> 的方式来修改webpack，导致无法与组内通用的一份webpack config 直接合并（不能用webpack-merge）。不得已之下只好从taro源码寻求解决方案。</p>
+<a id="more"></a>
+<h2 id="从入口开始"><a href="#从入口开始" class="headerlink" title="从入口开始"></a>从入口开始</h2><p>从运行的命令入手。查看 package.json, 可以看到与h5相关的是这两个命令：<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">"dev:h5": "npm run build:h5 -- --watch",</div><div class="line">"build:h5": "taro build --type h5",</div></pre></td></tr></table></figure></p>
+<p>于是我们去看看 taro build 到底干了什么。方法当然是先找到 taro 命令对应的文件，在Mac上直接执行 <code>which taro</code> 即可（windows下执行<code>where taro</code>）</p>
+<p>可以看到是在全局的node_modules下<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 在我的电脑下的路径</span></div><div class="line">/usr/<span class="built_in">local</span>/bin/node_modules/@tarojs/cli/bin</div></pre></td></tr></table></figure></p>
+<p>马上就能发现同目录下有taro-build文件，打开看到里面的核心方法 build<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// /bin/taro-build</span></div><div class="line"><span class="keyword">const</span> build = <span class="built_in">require</span>(<span class="string">'../src/build'</span>)</div><div class="line"></div><div class="line"><span class="comment">// 到/src/build.js 中找到</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">buildForH5</span> (<span class="params">buildConfig</span>) </span>&#123;</div><div class="line">  <span class="built_in">require</span>(<span class="string">'./h5'</span>).build(buildConfig)</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>看来关键就是<code>src/h5.js</code>里面的代码</p>
+<h2 id="H5的“编译”过程"><a href="#H5的“编译”过程" class="headerlink" title="H5的“编译”过程"></a>H5的“编译”过程</h2><p><code>.h5.js</code>里的<code>build</code>方法很简单，就两个关键方法：<code>buildTemp</code>, <code>buildDist</code><br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">build</span> (<span class="params">buildConfig</span>) </span>&#123;</div><div class="line">  process.env.TARO_ENV = Util.BUILD_TYPES.H5</div><div class="line">  <span class="keyword">await</span> clean()	</div><div class="line">  <span class="keyword">await</span> buildTemp(buildConfig)</div><div class="line">  <span class="keyword">await</span> buildDist(buildConfig)</div><div class="line">  <span class="keyword">if</span> (buildConfig.watch) &#123;</div><div class="line">    watchFiles()</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p> <code>buildDist</code>这个比较好理解，就是常规的webpack打包过程。那`buildTemp``又干了什么呢？</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">buildTemp</span> (<span class="params"></span>) </span>&#123;</div><div class="line">	<span class="comment">// 确保项目目录下有.temp文件夹</span></div><div class="line">  fs.ensureDirSync(tempPath)</div><div class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</div><div class="line">	  <span class="comment">// 遍历源代码</span></div><div class="line">    klaw(sourceDir)</div><div class="line">      .on(<span class="string">'data'</span>, file =&gt; &#123;</div><div class="line">        <span class="keyword">const</span> relativePath = path.relative(appPath, file.path)</div><div class="line">        <span class="keyword">if</span> (!file.stats.isDirectory()) &#123;</div><div class="line">          Util.printLog(Util.pocessTypeEnum.CREATE, <span class="string">'发现文件'</span>, relativePath)</div><div class="line">			<span class="comment">// 加工处理</span></div><div class="line">          processFiles(file.path)</div><div class="line">        &#125;</div><div class="line">      &#125;)</div><div class="line">      .on(<span class="string">'end'</span>, () =&gt; &#123;</div><div class="line">        resolve()</div><div class="line">      &#125;)</div><div class="line">  &#125;)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>可以发现， <code>buildTemp</code>是在遍历源码，然后生成一份平台相关的代码（抹平API差异，根据平台引入不同的包），并放在项目下的<code>.temp</code>文件夹。</p>
+<p>这么看来，我们似乎直接对 <code>.temp</code> 文件夹执行 <code>webpack</code>就能够进行自定义的webpack构建了！</p>
+<h2 id="就差一点点"><a href="#就差一点点" class="headerlink" title="就差一点点"></a>就差一点点</h2><p>当我兴高采烈地执行完<code>webpack</code>，打开页面后，看到的是一个两倍大小的页面。样式出问题了，看来webpack配置还差了一些东西，果断把taro生成的webpack配置打印出来看看：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">/config/index.js</div><div class="line"><span class="keyword">const</span> config = &#123;</div><div class="line">	<span class="comment">// ...</span></div><div class="line">	h5: &#123;</div><div class="line">		webpackChain(chain) &#123;</div><div class="line">			<span class="comment">// 这里是taro提供的，用于注入自定义配置的钩子</span></div><div class="line">			<span class="built_in">console</span>.log(chain.toString())</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>对比发现其实是少了postcss的loader。另外需要注意的是，taro还支持配置<code>designWidth</code>，<code>deviceRatio</code>，为了保证多端样式统一，我们的postcss配置也需要根据taro的配置来生成。至于怎么生成，直接搬@taro的代码（微改）就好：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"><span class="comment"> * ./node_modules/@tarojs/webpack-runner/dist/config/postcss.conf.js</span></div><div class="line"><span class="comment"> * 需要在新增插件的时候加上 new 关键字，以满足传统的webpack插件写法</span></div><div class="line"><span class="comment"> */</span></div><div class="line"></div><div class="line"><span class="comment">// e.g. 修改前</span></div><div class="line">plugins.push(autoprefixer(<span class="built_in">Object</span>.assign(defaultAutoprefixerOption, customAutoprefixerOption)));</div><div class="line"></div><div class="line"><span class="comment">// 修改后</span></div><div class="line">plugins.push(<span class="keyword">new</span> autoprefixer(<span class="built_in">Object</span>.assign(defaultAutoprefixerOption, customAutoprefixerOption)));</div></pre></td></tr></table></figure></p>
+<p>最后放在你自己的<code>webpack.config.js</code>文件里就好：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// webpack.config.js</span></div><div class="line"><span class="keyword">const</span> merge = <span class="built_in">require</span>(<span class="string">"lodash.merge"</span>)</div><div class="line"><span class="keyword">const</span> &#123; getPostcssPlugins &#125; = <span class="built_in">require</span>(<span class="string">"./postcss.conf"</span>)</div><div class="line"><span class="keyword">const</span> taroConfig = <span class="built_in">require</span>(<span class="string">"./config"</span>)(merge)</div><div class="line"></div><div class="line"><span class="comment">// 从项目中读出taro的配置</span></div><div class="line"><span class="keyword">const</span> &#123; designWidth, deviceRatio, h5 &#125; = taroConfig</div><div class="line"></div><div class="line"><span class="keyword">const</span> plugins = getPostcssPlugins(&#123;</div><div class="line">    designWidth,</div><div class="line">    deviceRatio,</div><div class="line">    postcssConfig: h5.module.postcss.plugins</div><div class="line">&#125;)</div><div class="line"></div><div class="line"><span class="comment">// postcss配置，px转换等</span></div><div class="line"><span class="keyword">const</span> postcssConfig = &#123;</div><div class="line">    loader: <span class="string">"postcss-loader"</span>,</div><div class="line">    options: &#123;</div><div class="line">        sourceMap: <span class="literal">true</span>,</div><div class="line">        ident: <span class="string">"postcss"</span>,</div><div class="line">        plugins</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// :sparkles: 注意，真正的入口应该是.temp文件夹下的文件</span></div><div class="line"><span class="keyword">const</span> entryPath = path.resolve(process.cwd(), <span class="string">".temp"</span>, <span class="string">"app.js"</span>)</div><div class="line"></div><div class="line"><span class="comment">// 后面就是正常的webpack配置部分</span></div></pre></td></tr></table></figure></p>
+<h2 id="局限"><a href="#局限" class="headerlink" title="局限"></a>局限</h2><p>因为目前 <code>npm run dev:h5</code> 命令一口气做了两件事：编译出<code>.temp</code>文件夹和启动<code>webpack-dev-server</code>。如果你的开发环境需要使用自己的dev-server，也许需要用到<code>concurrently</code>这个npm包来并行执行多个npm script（已建议官方拆分多一个<code>taro compile</code>的命令<a href="https://github.com/NervJS/taro/issues/982" target="_blank" rel="external">Feature Request taro-cli 能否多提供一个compile 命令, 仅生成.temp文件夹 · Issue #982 · NervJS/taro · GitHub</a>）</p>
+<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>其实灵感来源于mpvue的同构配置。对于mpvue来说，只需要分别执行vue和mpvue的webpack就好了。对taro来说，关键就是找到编译后生成的平台相关代码（<code>.temp</code>），然后就是熟悉的webpack构建流程了。</p>
+<p>同时，taro多出来的这一次编译，能够在编译阶段根据环境变量来去掉平台无关的代码，大大提高了开发者对与多端兼容的控制能力。（相比于mpvue只能在运行时做判断，无法运行时判断的就只能修改<code>mpvue-template-compiler</code>的代码了）</p>
+<p>最后的最后，欢迎各位小伙伴一起来交流学习～</p>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2018-12-07T06:37:29.000Z" itemprop="datePublished">
+              2018-12-07
+            </time>
+          </div>
+          
+            <div>
+              tags: 
+  <li class="meta-text">
+  { <a href="/tags/前端/">前端</a> }
+  </li>
+
+  <li class="meta-text">
+  { <a href="/tags/小程序/">小程序</a> }
+  </li>
+
+  <li class="meta-text">
+  { <a href="/tags/Taro/">Taro</a> }
+  </li>
+
+            </div>
+          
+      </section>
+    
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <div>© 2016 - fung </div>
+    <div>
+    Powered by Hexo
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+<script src="/js/pager/dist/singlepager.js"></script>
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>
